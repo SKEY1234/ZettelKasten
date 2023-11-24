@@ -1,5 +1,9 @@
+using ZettelKasten;
+
 var builder = WebApplication.CreateBuilder(args);
 
+string? connectionString = builder.Configuration.GetConnectionString("PostgreSqlConnection");
+builder.Services.AddNpgsql<ZettelkastenContext>(connectionString);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
