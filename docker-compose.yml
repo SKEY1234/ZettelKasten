@@ -2,5 +2,6 @@ services:
   frontend:
     container_name: zettelkasten
     image: ghcr.io/skey1234/zettelkasten:latest
+    network_mode: "host"
     ports:
       - 8990:8080
