@@ -5,3 +5,5 @@ services:
     network_mode: "host"
     ports:
       - 8990:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
