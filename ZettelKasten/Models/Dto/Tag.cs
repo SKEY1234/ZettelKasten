@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ZettelKasten.Models;
+namespace ZettelKasten.Models.DTO;
 
 public partial class Tag
 {

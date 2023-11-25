@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using ZettelKasten.Models;
+using ZettelKasten.Models.DTO;
 
-namespace ZettelKasten;
+namespace ZettelKasten.ORM;
 
 public partial class ZettelkastenContext : DbContext
 {
@@ -122,12 +122,6 @@ public partial class ZettelkastenContext : DbContext
             entity.Property(e => e.Userid)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("userid");
-            entity.Property(e => e.Firstname)
-                .HasColumnType("character varying")
-                .HasColumnName("firstname");
-            entity.Property(e => e.Lasstname)
-                .HasColumnType("character varying")
-                .HasColumnName("lasstname");
             entity.Property(e => e.Login)
                 .HasColumnType("character varying")
                 .HasColumnName("login");

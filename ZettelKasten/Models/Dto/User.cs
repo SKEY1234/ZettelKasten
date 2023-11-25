@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ZettelKasten.Models;
+namespace ZettelKasten.Models.DTO;
 
 public partial class User
 {
     public Guid Userid { get; set; }
-
-    public string Firstname { get; set; } = null!;
-
-    public string Lasstname { get; set; } = null!;
 
     public string Login { get; set; } = null!;
 
