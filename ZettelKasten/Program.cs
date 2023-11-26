@@ -1,5 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using System;
 using ZettelKasten.Commands;
 using ZettelKasten.Middleware;
 using ZettelKasten.Models.DTO;
@@ -33,5 +36,13 @@ app.MapNotesEndpoints();
 app.MapUsersEndpoints();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ZettelkastenContext>();
+
+    dbContext.Database.Migrate();
+}
 
 app.Run();
