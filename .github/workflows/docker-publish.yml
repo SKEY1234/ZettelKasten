@@ -40,6 +40,6 @@ jobs:
             ssh-keyscan -p 7822 -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
         - name: connect and pull
           # -o "PasswordAuthentication yes"
-          run: ssh -p 7822 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git pull && docker compose pull && docker compose up -d && exit"
+          run: ssh -p 7822 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
         - name: cleanup
           run: rm -rf ~/.ssh
