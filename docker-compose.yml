@@ -11,7 +11,7 @@ services:
     ports:
       - 8990:8080
     environment:
-      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=zettelkasten_db;Port=5432;Database=zettelkasten;IntegratedSecurity=true;Pooling=true;
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=zettelkasten_db;Port=5432;Database=zettelkasten;Pooling=true;
       - ASPNETCORE_URLS=http://+:8080
     networks:
       - dev
