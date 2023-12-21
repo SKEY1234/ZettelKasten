@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ZettelKasten.Commands;
+using ZettelKasten.Models.API;
 using ZettelKasten.Models.DTO;
 using ZettelKasten.Queries;
 
@@ -29,9 +30,17 @@ public static class EndpointsExtension
 
     public static void MapUsersEndpoints(this WebApplication app)
     {
-        app.MapGet("/users", async (string? login, IMediator _mediator) =>
+        app.MapGet("/users{login}", async ([FromQuery] string? login, IMediator _mediator) =>
         {
-            var user = await _mediator.Send(new GetUserByLoginQuery(login));
+            Result<User> user = await _mediator.Send(new GetUserByLoginQuery(login));
+            return user;
+        })
+        .WithName("GetUserByLogin")
+        .WithOpenApi();
+
+        app.MapGet("/users", async (IMediator _mediator) =>
+        {
+            Result<User[]> user = await _mediator.Send(new GetAllUsersQuery());
             return user;
         })
         .WithName("GetUserByLogin")
