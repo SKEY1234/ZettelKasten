@@ -10,6 +10,6 @@ public partial class User
     public string Login { get; set; } = null!;
 
     public string? Pass { get; set; }
-
+    public DateTime? CreatedOn { get; set; }
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 }

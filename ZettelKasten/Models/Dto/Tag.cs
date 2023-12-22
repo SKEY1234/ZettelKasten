@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ZettelKasten.Models.DTO;
+﻿namespace ZettelKasten.Models.DTO;
 
 public partial class Tag
 {
-    public Guid Tagid { get; set; }
-
+    public Guid TagId { get; set; }
     public string? Name { get; set; }
-
-    public virtual ICollection<Notetagrelation> Notetagrelations { get; set; } = new List<Notetagrelation>();
+    public DateTime? CreatedOn { get; set; }
+    public virtual ICollection<NoteTagRelation> NoteTagRelations { get; set; } = new List<NoteTagRelation>();
 }

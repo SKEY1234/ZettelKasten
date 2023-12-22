@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace ZettelKasten.Models.DTO;
 
-public partial class Notetagrelation
+public partial class NoteTagRelation
 {
-    public Guid Relationid { get; set; }
+    public Guid RelationId { get; set; }
 
-    public Guid? Noteid { get; set; }
+    public Guid? NoteId { get; set; }
 
-    public Guid? Tagid { get; set; }
+    public Guid? TagId { get; set; }
+    public DateTime? CreatedOn { get; set; }
 
     public virtual Note? Note { get; set; }
 

@@ -35,7 +35,6 @@ app.MapUsersEndpoints();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-#if !DEBUG
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider
@@ -43,5 +42,5 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.Migrate();
 }
-#endif
+
 app.Run();

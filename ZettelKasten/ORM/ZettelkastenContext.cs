@@ -19,9 +19,9 @@ public partial class ZettelkastenContext : DbContext
 
     public virtual DbSet<Note> Notes { get; set; }
 
-    public virtual DbSet<Noterelation> Noterelations { get; set; }
+    public virtual DbSet<NoteRelation> Noterelations { get; set; }
 
-    public virtual DbSet<Notetagrelation> Notetagrelations { get; set; }
+    public virtual DbSet<NoteTagRelation> Notetagrelations { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
 
@@ -37,76 +37,76 @@ public partial class ZettelkastenContext : DbContext
 
         modelBuilder.Entity<Note>(entity =>
         {
-            entity.HasKey(e => e.Noteid).HasName("notes_pkey");
+            entity.HasKey(e => e.NoteId).HasName("notes_pkey");
 
             entity.ToTable("notes");
 
-            entity.Property(e => e.Noteid)
+            entity.Property(e => e.NoteId)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("noteid");
             entity.Property(e => e.Content).HasColumnName("content");
-            entity.Property(e => e.Creationdate).HasColumnName("creationdate");
+            entity.Property(e => e.CreatedOn).HasColumnName("createdon");
             entity.Property(e => e.Title)
                 .HasMaxLength(255)
                 .HasColumnName("title");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.UserId).HasColumnName("userid");
 
             entity.HasOne(d => d.User).WithMany(p => p.Notes)
-                .HasForeignKey(d => d.Userid)
+                .HasForeignKey(d => d.UserId)
                 .HasConstraintName("notes_userid_fkey");
         });
 
-        modelBuilder.Entity<Noterelation>(entity =>
+        modelBuilder.Entity<NoteRelation>(entity =>
         {
-            entity.HasKey(e => e.Relationid).HasName("noterelations_pkey");
+            entity.HasKey(e => e.RelationId).HasName("noterelations_pkey");
 
             entity.ToTable("noterelations");
 
-            entity.Property(e => e.Relationid)
+            entity.Property(e => e.RelationId)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("relationid");
-            entity.Property(e => e.Sourcenoteid).HasColumnName("sourcenoteid");
-            entity.Property(e => e.Targetnoteid).HasColumnName("targetnoteid");
+            entity.Property(e => e.SourceNoteId).HasColumnName("sourcenoteid");
+            entity.Property(e => e.TargetNoteId).HasColumnName("targetnoteid");
 
-            entity.HasOne(d => d.Sourcenote).WithMany(p => p.NoterelationSourcenotes)
-                .HasForeignKey(d => d.Sourcenoteid)
+            entity.HasOne(d => d.SourceNote).WithMany(p => p.NoteRelationSourceNotes)
+                .HasForeignKey(d => d.SourceNoteId)
                 .HasConstraintName("noterelations_sourcenoteid_fkey");
 
-            entity.HasOne(d => d.Targetnote).WithMany(p => p.NoterelationTargetnotes)
-                .HasForeignKey(d => d.Targetnoteid)
+            entity.HasOne(d => d.TargetNote).WithMany(p => p.NoteRelationTargetNotes)
+                .HasForeignKey(d => d.TargetNoteId)
                 .HasConstraintName("noterelations_targetnoteid_fkey");
         });
 
-        modelBuilder.Entity<Notetagrelation>(entity =>
+        modelBuilder.Entity<NoteTagRelation>(entity =>
         {
-            entity.HasKey(e => e.Relationid).HasName("notetagrelations_pkey");
+            entity.HasKey(e => e.RelationId).HasName("notetagrelations_pkey");
 
             entity.ToTable("notetagrelations");
 
-            entity.Property(e => e.Relationid)
+            entity.Property(e => e.RelationId)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("relationid");
-            entity.Property(e => e.Noteid).HasColumnName("noteid");
-            entity.Property(e => e.Tagid).HasColumnName("tagid");
+            entity.Property(e => e.NoteId).HasColumnName("noteid");
+            entity.Property(e => e.TagId).HasColumnName("tagid");
 
-            entity.HasOne(d => d.Note).WithMany(p => p.Notetagrelations)
-                .HasForeignKey(d => d.Noteid)
+            entity.HasOne(d => d.Note).WithMany(p => p.NoteTagRelations)
+                .HasForeignKey(d => d.NoteId)
                 .HasConstraintName("notetagrelations_noteid_fkey");
 
-            entity.HasOne(d => d.Tag).WithMany(p => p.Notetagrelations)
-                .HasForeignKey(d => d.Tagid)
+            entity.HasOne(d => d.Tag).WithMany(p => p.NoteTagRelations)
+                .HasForeignKey(d => d.TagId)
                 .HasConstraintName("notetagrelations_tagid_fkey");
         });
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.Tagid).HasName("tags_pkey");
+            entity.HasKey(e => e.TagId).HasName("tags_pkey");
 
             entity.ToTable("tags");
 
             entity.HasIndex(e => e.Name, "tags_name_key").IsUnique();
 
-            entity.Property(e => e.Tagid)
+            entity.Property(e => e.TagId)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("tagid");
             entity.Property(e => e.Name)

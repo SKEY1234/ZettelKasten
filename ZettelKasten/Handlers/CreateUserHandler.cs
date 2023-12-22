@@ -19,7 +19,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Result<Unit>
     {
         await _context.Users.AddAsync(request.User, cancellationToken);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return Result<Unit>.Success(Unit.Value);
     }

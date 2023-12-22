@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ZettelKasten.ORM;
@@ -11,9 +12,11 @@ using ZettelKasten.ORM;
 namespace ZettelKasten.Migrations
 {
     [DbContext(typeof(ZettelkastenContext))]
-    partial class ZettelkastenContextModelSnapshot : ModelSnapshot
+    [Migration("20231222171543_AddCreatedOnFields")]
+    partial class AddCreatedOnFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +28,7 @@ namespace ZettelKasten.Migrations
 
             modelBuilder.Entity("ZettelKasten.Models.DTO.Note", b =>
                 {
-                    b.Property<Guid>("NoteId")
+                    b.Property<Guid>("Noteid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("noteid")
@@ -44,21 +47,21 @@ namespace ZettelKasten.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("title");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid?>("Userid")
                         .HasColumnType("uuid")
                         .HasColumnName("userid");
 
-                    b.HasKey("NoteId")
+                    b.HasKey("Noteid")
                         .HasName("notes_pkey");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Userid");
 
                     b.ToTable("notes", (string)null);
                 });
 
-            modelBuilder.Entity("ZettelKasten.Models.DTO.NoteRelation", b =>
+            modelBuilder.Entity("ZettelKasten.Models.DTO.Noterelation", b =>
                 {
-                    b.Property<Guid>("RelationId")
+                    b.Property<Guid>("Relationid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("relationid")
@@ -67,27 +70,27 @@ namespace ZettelKasten.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("SourceNoteId")
+                    b.Property<Guid?>("Sourcenoteid")
                         .HasColumnType("uuid")
                         .HasColumnName("sourcenoteid");
 
-                    b.Property<Guid?>("TargetNoteId")
+                    b.Property<Guid?>("Targetnoteid")
                         .HasColumnType("uuid")
                         .HasColumnName("targetnoteid");
 
-                    b.HasKey("RelationId")
+                    b.HasKey("Relationid")
                         .HasName("noterelations_pkey");
 
-                    b.HasIndex("SourceNoteId");
+                    b.HasIndex("Sourcenoteid");
 
-                    b.HasIndex("TargetNoteId");
+                    b.HasIndex("Targetnoteid");
 
                     b.ToTable("noterelations", (string)null);
                 });
 
-            modelBuilder.Entity("ZettelKasten.Models.DTO.NoteTagRelation", b =>
+            modelBuilder.Entity("ZettelKasten.Models.DTO.Notetagrelation", b =>
                 {
-                    b.Property<Guid>("RelationId")
+                    b.Property<Guid>("Relationid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("relationid")
@@ -96,27 +99,27 @@ namespace ZettelKasten.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("NoteId")
+                    b.Property<Guid?>("Noteid")
                         .HasColumnType("uuid")
                         .HasColumnName("noteid");
 
-                    b.Property<Guid?>("TagId")
+                    b.Property<Guid?>("Tagid")
                         .HasColumnType("uuid")
                         .HasColumnName("tagid");
 
-                    b.HasKey("RelationId")
+                    b.HasKey("Relationid")
                         .HasName("notetagrelations_pkey");
 
-                    b.HasIndex("NoteId");
+                    b.HasIndex("Noteid");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("Tagid");
 
                     b.ToTable("notetagrelations", (string)null);
                 });
 
             modelBuilder.Entity("ZettelKasten.Models.DTO.Tag", b =>
                 {
-                    b.Property<Guid>("TagId")
+                    b.Property<Guid>("Tagid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("tagid")
@@ -130,7 +133,7 @@ namespace ZettelKasten.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
-                    b.HasKey("TagId")
+                    b.HasKey("Tagid")
                         .HasName("tags_pkey");
 
                     b.HasIndex(new[] { "Name" }, "tags_name_key")
@@ -169,39 +172,39 @@ namespace ZettelKasten.Migrations
                 {
                     b.HasOne("ZettelKasten.Models.DTO.User", "User")
                         .WithMany("Notes")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Userid")
                         .HasConstraintName("notes_userid_fkey");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ZettelKasten.Models.DTO.NoteRelation", b =>
+            modelBuilder.Entity("ZettelKasten.Models.DTO.Noterelation", b =>
                 {
-                    b.HasOne("ZettelKasten.Models.DTO.Note", "SourceNote")
-                        .WithMany("NoteRelationSourceNotes")
-                        .HasForeignKey("SourceNoteId")
+                    b.HasOne("ZettelKasten.Models.DTO.Note", "Sourcenote")
+                        .WithMany("NoterelationSourcenotes")
+                        .HasForeignKey("Sourcenoteid")
                         .HasConstraintName("noterelations_sourcenoteid_fkey");
 
-                    b.HasOne("ZettelKasten.Models.DTO.Note", "TargetNote")
-                        .WithMany("NoteRelationTargetNotes")
-                        .HasForeignKey("TargetNoteId")
+                    b.HasOne("ZettelKasten.Models.DTO.Note", "Targetnote")
+                        .WithMany("NoterelationTargetnotes")
+                        .HasForeignKey("Targetnoteid")
                         .HasConstraintName("noterelations_targetnoteid_fkey");
 
-                    b.Navigation("SourceNote");
+                    b.Navigation("Sourcenote");
 
-                    b.Navigation("TargetNote");
+                    b.Navigation("Targetnote");
                 });
 
-            modelBuilder.Entity("ZettelKasten.Models.DTO.NoteTagRelation", b =>
+            modelBuilder.Entity("ZettelKasten.Models.DTO.Notetagrelation", b =>
                 {
                     b.HasOne("ZettelKasten.Models.DTO.Note", "Note")
-                        .WithMany("NoteTagRelations")
-                        .HasForeignKey("NoteId")
+                        .WithMany("Notetagrelations")
+                        .HasForeignKey("Noteid")
                         .HasConstraintName("notetagrelations_noteid_fkey");
 
                     b.HasOne("ZettelKasten.Models.DTO.Tag", "Tag")
-                        .WithMany("NoteTagRelations")
-                        .HasForeignKey("TagId")
+                        .WithMany("Notetagrelations")
+                        .HasForeignKey("Tagid")
                         .HasConstraintName("notetagrelations_tagid_fkey");
 
                     b.Navigation("Note");
@@ -211,16 +214,16 @@ namespace ZettelKasten.Migrations
 
             modelBuilder.Entity("ZettelKasten.Models.DTO.Note", b =>
                 {
-                    b.Navigation("NoteRelationSourceNotes");
+                    b.Navigation("NoterelationSourcenotes");
 
-                    b.Navigation("NoteRelationTargetNotes");
+                    b.Navigation("NoterelationTargetnotes");
 
-                    b.Navigation("NoteTagRelations");
+                    b.Navigation("Notetagrelations");
                 });
 
             modelBuilder.Entity("ZettelKasten.Models.DTO.Tag", b =>
                 {
-                    b.Navigation("NoteTagRelations");
+                    b.Navigation("Notetagrelations");
                 });
 
             modelBuilder.Entity("ZettelKasten.Models.DTO.User", b =>

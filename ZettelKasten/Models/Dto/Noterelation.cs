@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace ZettelKasten.Models.DTO;
 
-namespace ZettelKasten.Models.DTO;
-
-public partial class Noterelation
+public partial class NoteRelation
 {
-    public Guid Relationid { get; set; }
+    public Guid RelationId { get; set; }
 
-    public Guid? Sourcenoteid { get; set; }
+    public Guid? SourceNoteId { get; set; }
 
-    public Guid? Targetnoteid { get; set; }
+    public Guid? TargetNoteId { get; set; }
+    public DateTime? CreatedOn { get; set; }
 
-    public virtual Note? Sourcenote { get; set; }
+    public virtual Note? SourceNote { get; set; }
 
-    public virtual Note? Targetnote { get; set; }
+    public virtual Note? TargetNote { get; set; }
 }
