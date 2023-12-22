@@ -1,16 +1,14 @@
-using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System;
-using ZettelKasten.Commands;
 using ZettelKasten.Middleware;
-using ZettelKasten.Models.DTO;
 using ZettelKasten.ORM;
-using ZettelKasten.Queries;
 using ZettelKasten.Startup;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+#if DEBUG
+    EnvironmentName = "Development"
+#endif
+});
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddNpgsql<ZettelkastenContext>(connectionString);
@@ -37,6 +35,7 @@ app.MapUsersEndpoints();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+#if !DEBUG
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider
@@ -44,5 +43,5 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.Migrate();
 }
-
+#endif
 app.Run();
