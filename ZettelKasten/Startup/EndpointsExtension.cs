@@ -43,7 +43,7 @@ public static class EndpointsExtension
             Result<User[]> user = await _mediator.Send(new GetAllUsersQuery());
             return user;
         })
-        .WithName("GetUserByLogin")
+        .WithName("GetAllUsers")
         .WithOpenApi();
 
         app.MapPost("/users", async ([FromBody] User user, IMediator _mediator) =>
