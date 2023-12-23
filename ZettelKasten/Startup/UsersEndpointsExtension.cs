@@ -37,7 +37,7 @@ public static class UsersEndpointsExtension
 
         group.MapDelete("/Delete", async ([FromQuery] Guid? userId, IMediator _mediator, CancellationToken cancellationToken) =>
         {
-            Result<Unit> result = await _mediator.Send(new DeleteUserCommand(user), cancellationToken);
+            Result<Unit> result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
             return result;
         });
 
