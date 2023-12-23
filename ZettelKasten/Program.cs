@@ -45,6 +45,11 @@ app.MapGroup("/tags")
     .WithOpenApi()
     .WithTags("Tags");
 
+app.MapGroup("/relations")
+    .RelationsGroup()
+    .WithOpenApi()
+    .WithTags("Relations");
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 using (var scope = app.Services.CreateScope())

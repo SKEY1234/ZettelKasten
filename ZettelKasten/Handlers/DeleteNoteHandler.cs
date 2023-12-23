@@ -15,7 +15,17 @@ public class DeleteNoteHandler : IRequestHandler<DeleteNoteCommand, Result<Unit>
     }
     public async Task<Result<Unit>> Handle(DeleteNoteCommand request, CancellationToken cancellationToken)
     {
-        await _context.Notes.Where(x => x.NoteId == request.NoteId).ExecuteDeleteAsync(cancellationToken);
+        await _context.NoteRelations.Where(x => 
+            x.SourceNoteId == request.NoteId
+            || x.TargetNoteId == request.NoteId)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        await _context.NoteTagRelations.Where(x =>
+            x.NoteId == request.NoteId)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        await _context.Notes.Where(x => x.NoteId == request.NoteId)
+            .ExecuteDeleteAsync(cancellationToken);
 
         return Result<Unit>.Success();
     }

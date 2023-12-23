@@ -19,9 +19,9 @@ public partial class ZettelkastenContext : DbContext
 
     public virtual DbSet<Note> Notes { get; set; }
 
-    public virtual DbSet<NoteRelation> Noterelations { get; set; }
+    public virtual DbSet<NoteRelation> NoteRelations { get; set; }
 
-    public virtual DbSet<NoteTagRelation> Notetagrelations { get; set; }
+    public virtual DbSet<NoteTagRelation> NoteTagRelations { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
 

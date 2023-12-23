@@ -16,18 +16,11 @@ public class UpdateNoteHandler : IRequestHandler<UpdateNoteCommand, Result<Unit>
     }
     public async Task<Result<Unit>> Handle(UpdateNoteCommand request, CancellationToken cancellationToken)
     {
-        Note? existingNote = await _context.Notes.FirstOrDefaultAsync(x => x.NoteId == request.Note.NoteId, cancellationToken);
-
-        if (existingNote is null)
-            return Result<Unit>.Failure($"Не найден тэг с Id {request.Note.NoteId}");
-
-        if (!string.IsNullOrWhiteSpace(request.Note.Title))
-            existingNote.Title = request.Note.Title;
-
-        if (!string.IsNullOrWhiteSpace(request.Note.Content))
-            existingNote.Content = request.Note.Content;
-
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.Notes.Where(x => x.NoteId == request.Note.NoteId)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(p => p.Title, request.Note.Title)
+                .SetProperty(p => p.Content, request.Note.Content), 
+                cancellationToken);
 
         return Result<Unit>.Success(Unit.Value);
     }
