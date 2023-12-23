@@ -5,7 +5,7 @@ namespace ZettelKasten.Models.DTO;
 
 public partial class User
 {
-    public Guid Userid { get; set; }
+    public Guid UserId { get; set; }
 
     public string Login { get; set; } = null!;
 

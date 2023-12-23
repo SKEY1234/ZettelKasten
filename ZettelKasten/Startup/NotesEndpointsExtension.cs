@@ -9,22 +9,38 @@ namespace ZettelKasten.Startup;
 
 public static class NotesEndpointsExtension
 {
-    public static void MapNotesEndpoints(this WebApplication app)
+    public static RouteGroupBuilder NotesGroup(this RouteGroupBuilder group)
     {
-        app.MapGet("/notes", async (IMediator _mediator, CancellationToken cancellationToken) =>
+        group.MapGet("/GetAll", async (IMediator _mediator, CancellationToken cancellationToken) =>
         {
-            var notes = await _mediator.Send(new GetNotesQuery(), cancellationToken);
+            Result<Note[]> notes = await _mediator.Send(new GetAllNotesQuery(), cancellationToken);
             return notes;
-        })
-        .WithName("GetNotes")
-        .WithOpenApi();
+        });
 
-        app.MapPost("/notes", async (Note note, IMediator _mediator, CancellationToken cancellationToken) =>
+        group.MapGet("/GetAllByUser", async ([FromQuery] Guid? userId, IMediator _mediator, CancellationToken cancellationToken) =>
         {
-            var result = await _mediator.Send(new CreateNoteCommand(note), cancellationToken);
+            Result<Note[]> notes = await _mediator.Send(new GetAllNotesByUserQuery(userId), cancellationToken);
+            return notes;
+        });
+
+        group.MapPost("/Create", async (Note note, IMediator _mediator, CancellationToken cancellationToken) =>
+        {
+            Result<Unit> result = await _mediator.Send(new CreateNoteCommand(note), cancellationToken);
             return result;
-        })
-        .WithName("CreateNote")
-        .WithOpenApi();
+        });
+
+        group.MapPut("/Update", async (Note note, IMediator _mediator, CancellationToken cancellationToken) =>
+        {
+            Result<Unit> result = await _mediator.Send(new UpdateNoteCommand(note), cancellationToken);
+            return result;
+        });
+
+        group.MapDelete("/Delete", async (Guid? noteId, IMediator _mediator, CancellationToken cancellationToken) =>
+        {
+            Result<Unit> result = await _mediator.Send(new DeleteNoteCommand(noteId), cancellationToken);
+            return result;
+        });
+
+        return group;
     }
 }

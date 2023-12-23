@@ -30,8 +30,20 @@ app.Logger.LogInformation($"ConnectionString={connectionString}");
 
 //app.UseHttpsRedirection();
 
-app.MapNotesEndpoints();
-app.MapUsersEndpoints();
+app.MapGroup("/users")
+    .UsersGroup()
+    .WithOpenApi()
+    .WithTags("Users");
+
+app.MapGroup("/notes")
+    .NotesGroup()
+    .WithOpenApi()
+    .WithTags("Notes");
+
+app.MapGroup("/tags")
+    .TagsGroup()
+    .WithOpenApi()
+    .WithTags("Tags");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

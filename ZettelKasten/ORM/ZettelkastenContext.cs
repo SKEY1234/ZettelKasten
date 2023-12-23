@@ -116,11 +116,11 @@ public partial class ZettelkastenContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Userid).HasName("users_pkey");
+            entity.HasKey(e => e.UserId).HasName("users_pkey");
 
             entity.ToTable("users");
 
-            entity.Property(e => e.Userid)
+            entity.Property(e => e.UserId)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("userid");
             entity.Property(e => e.Login)

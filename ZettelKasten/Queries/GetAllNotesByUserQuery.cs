@@ -4,6 +4,6 @@ using ZettelKasten.Models.DTO;
 
 namespace ZettelKasten.Queries;
 
-public record GetNotesQuery() : IRequest<Result<Note[]>>
+public record GetAllNotesByUserQuery(Guid? UserId) : IRequest<Result<Note[]>>
 {
 }

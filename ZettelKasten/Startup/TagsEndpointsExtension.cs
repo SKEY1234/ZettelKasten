@@ -7,13 +7,29 @@ namespace ZettelKasten.Startup;
 
 public static class TagsEndpointsExtension
 {
-    public static void MapTagsEndpoints(this WebApplication app)
+    public static RouteGroupBuilder TagsGroup(this RouteGroupBuilder group)
     {
-        app.MapPost("/tags", async (Tag tag, IMediator _mediator, CancellationToken cancellationToken) =>
+        group.MapPost("/Create", async (Tag tag, IMediator _mediator, CancellationToken cancellationToken) =>
         {
             Result<Unit> result = await _mediator.Send(new CreateTagCommand(tag), cancellationToken);
-        })
-        .WithName("CreateTag")
-        .WithOpenApi();
+
+            return result;
+        });
+
+        group.MapPut("/Update", async (Tag tag, IMediator _mediator, CancellationToken cancellationToken) =>
+        {
+            Result<Unit> result = await _mediator.Send(new UpdateTagCommand(tag), cancellationToken);
+
+            return result;
+        });
+
+        group.MapDelete("/Delete", async (Guid? tagId, IMediator _mediator, CancellationToken cancellationToken) =>
+        {
+            Result<Unit> result = await _mediator.Send(new DeleteTagCommand(tagId), cancellationToken);
+
+            return result;
+        });
+
+        return group;
     }
 }

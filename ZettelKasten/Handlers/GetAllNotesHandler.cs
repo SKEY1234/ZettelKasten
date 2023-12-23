@@ -7,16 +7,16 @@ using ZettelKasten.Queries;
 
 namespace ZettelKasten.Handlers;
 
-public class GetNotesHandler : IRequestHandler<GetNotesQuery, Result<Note[]>>
+public class GetAllNotesHandler : IRequestHandler<GetAllNotesQuery, Result<Note[]>>
 {
     private readonly ZettelkastenContext _context;
 
-    public GetNotesHandler(ZettelkastenContext context)
+    public GetAllNotesHandler(ZettelkastenContext context)
     {
         _context = context;
     }
 
-    public async Task<Result<Note[]>> Handle(GetNotesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Note[]>> Handle(GetAllNotesQuery request, CancellationToken cancellationToken)
     {
         Note[] notes = await _context.Notes.ToArrayAsync(cancellationToken);
 
