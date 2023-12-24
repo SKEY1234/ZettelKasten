@@ -15,7 +15,11 @@ public class DeleteTagHandler : IRequestHandler<DeleteTagCommand, Result<Unit>>
     }
     public async Task<Result<Unit>> Handle(DeleteTagCommand request, CancellationToken cancellationToken)
     {
-        await _context.Tags.Where(x => x.TagId == request.TagId).ExecuteDeleteAsync(cancellationToken);
+        await _context.NoteTagRelations.Where(x => x.TagId == request.TagId)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        await _context.Tags.Where(x => x.TagId == request.TagId)
+            .ExecuteDeleteAsync(cancellationToken);
 
         return Result<Unit>.Success();
     }
