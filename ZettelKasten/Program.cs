@@ -48,7 +48,7 @@ app.MapGroup("/tags")
 app.MapGroup("/relations")
     .RelationsGroup()
     .WithOpenApi()
-    .WithTags("Relations");
+    .WithTags("Relations123");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
