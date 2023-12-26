@@ -1,75 +1,17 @@
 import React, { useState } from 'react';
 import './App.css';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  FileOutlined,
-  TagOutlined,
-} from '@ant-design/icons';
-import { Layout, Menu, Button, Input, theme } from 'antd';
-
-const { Header, Sider, Content } = Layout;
-const { Search } = Input;
+import { BasePage } from './pages/BasePage';
+import { Route, Routes } from 'react-router-dom';
 
 const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
 
   return (
-    <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <FileOutlined />,
-              label: 'Notes',
-            },
-            {
-              key: '2',
-              icon: <TagOutlined />,
-              label: 'Tags',
-            }
-          ]}
-        />
-      </Sider>
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} >
-          <div style={{ display: 'flex' }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
-          <Search style={{ padding: '20px' }} placeholder="input search loading with enterButton" 
-          loading enterButton 
-          />
-          </div>
-        </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          Content
-        </Content>
-      </Layout>
-    </Layout>
+    <>
+      <Routes>
+        <Route path="/" element={<div>Test</div>} />
+        <Route path={`/Zettelkasten`} element={<BasePage />} />
+      </Routes>
+    </>
   );
 }
 

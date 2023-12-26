@@ -30,25 +30,9 @@ app.Logger.LogInformation($"ConnectionString={connectionString}");
 
 //app.UseHttpsRedirection();
 
-app.MapGroup("/users")
-    .UsersGroup()
-    .WithOpenApi()
-    .WithTags("Users");
-
-app.MapGroup("/notes")
-    .NotesGroup()
-    .WithOpenApi()
-    .WithTags("Notes");
-
-app.MapGroup("/tags")
-    .TagsGroup()
-    .WithOpenApi()
-    .WithTags("Tags");
-
-app.MapGroup("/relations")
-    .RelationsGroup()
-    .WithOpenApi()
-    .WithTags("Relations");
+app.MapGroup("/api")
+    .ApiGroup()
+    .WithOpenApi();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
