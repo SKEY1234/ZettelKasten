@@ -10,7 +10,7 @@ import { Note } from '../components/Note';
 import { Table } from '../components/Table';
 
 export const BasePage: React.FC = () => {
-    const { Header, Sider, Content } = Layout;
+    //const { Header, Sider, Content } = Layout;
     const { Search } = Input;
 
     const [collapsed, setCollapsed] = useState(false);
@@ -20,7 +20,7 @@ export const BasePage: React.FC = () => {
 
     return(
         <Layout style={{ height: '100vh' }}>
-            <Sider trigger={null} collapsible collapsed={collapsed}>
+            <Layout.Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
                 theme="dark"
@@ -39,9 +39,9 @@ export const BasePage: React.FC = () => {
                     }
                 ]}
                 />
-            </Sider>
-            <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }} >
+            </Layout.Sider>
+        <Layout>
+            <Layout.Header style={{ padding: 0, background: colorBgContainer }} >
                 <div style={{ display: 'flex' }}>
                     <Button
                     type="text"
@@ -57,8 +57,8 @@ export const BasePage: React.FC = () => {
                     loading enterButton 
                     />
                 </div>
-                </Header>
-                <Content
+            </Layout.Header>
+            <Layout.Content
                 style={{
                     margin: '24px 16px',
                     padding: 24,
@@ -68,7 +68,7 @@ export const BasePage: React.FC = () => {
                 }}
                 >
                 <Table />
-                </Content>
+            </Layout.Content>
             </Layout>
         </Layout>
     )
