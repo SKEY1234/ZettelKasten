@@ -2,36 +2,45 @@ import { Col, Dropdown, MenuProps, Row, Space, Typography } from "antd"
 import { DownOutlined } from '@ant-design/icons';
 import { Note } from "./Note"
 import React, { useState } from "react";
-import { data } from "../api/Api";
 import { useMount } from "ahooks";
+import { store } from "../store/Store";
 
 export const Table: React.FC = () => {
     const [columnsNum, setColumnsNum] = useState<number>(2);
+    const [columns, setColumns] = useState<React.ReactElement[]>([]);
+    const [rows, setRows] = useState<React.ReactElement[]>([]);
+    //;
 
-    // useMount(() => {
-    //     drawTable();
-    // })
+    useMount(async () => {
+        await store.getNotes();
 
-    const columns: React.ReactElement[] = [];
-    const rows: any[] = [];
-    const wholeRows: number = data.length / columnsNum;
+        const columns: React.ReactElement[] = [];
+        const rows: React.ReactElement[] = [];
+        const wholeRows: number = store.notes.length / columnsNum;
 
-    for (let i = 0; i < data.length; i++) {
-        columns.push(
-        <Col span={24 / columnsNum} >
-            <Note title={data[i].title} content={data[i].content}/>
-        </Col>);
-    }
+        for (let i = 0; i < store.notes.length; i++) {
+            columns.push(
+            <Col span={24 / columnsNum} >
+                <Note title={store.notes[i].title} content={store.notes[i].content}/>
+            </Col>);
+        }
+    
+        for (let i = 0, j = 0;  i < wholeRows; i++) {
+            rows.push(
+            //<div style={{ marginBottom: 16 }}>
+                <Row gutter={[16, 16]}>
+                    {columns.slice(j, j + columnsNum)}
+                </Row>);
+            //</div>);
+            j += columnsNum;
+        }
 
-    for (let i = 0, j = 0;  i < wholeRows; i++) {
-        rows.push(
-        //<div style={{ marginBottom: 16 }}>
-            <Row gutter={[16, 16]}>
-                {columns.slice(j, j + columnsNum)}
-            </Row>);
-        //</div>);
-        j += columnsNum;
-    }
+        setColumns(columns);
+        setRows(rows);
+    })
+
+
+    //console.log(rows);
 
     const handleSizeClick = (event: any) => {
         console.log(event)
@@ -71,7 +80,6 @@ export const Table: React.FC = () => {
                 </Typography.Link>
             </Dropdown>
             {rows}
-            {wholeRows}
         </>
     )
 }

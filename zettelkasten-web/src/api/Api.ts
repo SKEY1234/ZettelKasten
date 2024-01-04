@@ -1,3 +1,7 @@
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { INote } from "../models/INote";
+import { BaseResponse } from "../models/responses/BaseResponse";
+
 export const data = [
     { title: "title1", content: "content1" },
     { title: "title2", content: "content2" },
@@ -15,3 +19,14 @@ export const data = [
     { title: "title14", content: "content14" },
     { title: "title15", content: "content15" },
 ];
+
+export async function getNotes(): Promise<BaseResponse<INote[]>> {
+    try {
+        const response = await axios.get<BaseResponse<INote[]>>(`${process.env.REACT_APP_API_URL}/notes/GetAll`);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}
