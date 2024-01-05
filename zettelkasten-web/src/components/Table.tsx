@@ -1,19 +1,26 @@
 import { Col, Dropdown, MenuProps, Row, Space, Typography } from "antd"
 import { DownOutlined } from '@ant-design/icons';
 import { Note } from "./Note"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMount } from "ahooks";
 import { store } from "../store/Store";
 
 export const Table: React.FC = () => {
     const [columnsNum, setColumnsNum] = useState<number>(2);
-    const [columns, setColumns] = useState<React.ReactElement[]>([]);
+    //const [columns, setColumns] = useState<React.ReactElement[]>([]);
     const [rows, setRows] = useState<React.ReactElement[]>([]);
     //;
 
     useMount(async () => {
         await store.getNotes();
+        drawTable();
+    })
 
+    useEffect(() => {
+        drawTable();
+    }, [columnsNum])
+
+    const drawTable = () => {
         const columns: React.ReactElement[] = [];
         const rows: React.ReactElement[] = [];
         const wholeRows: number = store.notes.length / columnsNum;
@@ -27,24 +34,20 @@ export const Table: React.FC = () => {
     
         for (let i = 0, j = 0;  i < wholeRows; i++) {
             rows.push(
-            //<div style={{ marginBottom: 16 }}>
                 <Row gutter={[16, 16]}>
                     {columns.slice(j, j + columnsNum)}
                 </Row>);
-            //</div>);
             j += columnsNum;
         }
 
-        setColumns(columns);
+        //setColumns(columns);
         setRows(rows);
-    })
-
-
-    //console.log(rows);
+    }
 
     const handleSizeClick = (event: any) => {
-        console.log(event)
-        setColumnsNum(event.key)
+        console.log(event);
+        setColumnsNum(event.key);
+        //drawTable();
     }
 
     const items: MenuProps['items'] = [

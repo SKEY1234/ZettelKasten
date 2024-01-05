@@ -4,10 +4,11 @@ import {
     FileOutlined,
     TagOutlined,
   } from '@ant-design/icons';
-  import { Layout, Menu, Button, Input, theme, Col, Card, Row } from 'antd';
+  import { Layout, Menu, Button, Input, theme, Col, Card, Row, Spin } from 'antd';
 import { useState } from 'react';
 import { Note } from '../components/Note';
 import { Table } from '../components/Table';
+import { store } from '../store/Store';
 
 export const BasePage: React.FC = () => {
     //const { Header, Sider, Content } = Layout;
@@ -17,6 +18,10 @@ export const BasePage: React.FC = () => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    const handleInput = (event: React.FormEvent<HTMLElement>) => {
+        console.log(event.target);
+    }
 
     return(
         <Layout style={{ height: '100vh' }}>
@@ -54,7 +59,7 @@ export const BasePage: React.FC = () => {
                     }}
                     />
                     <Search style={{ padding: '20px' }} placeholder="input search loading with enterButton" 
-                    loading enterButton 
+                    loading enterButton onInput={handleInput}
                     />
                 </div>
             </Layout.Header>
@@ -67,7 +72,8 @@ export const BasePage: React.FC = () => {
                     borderRadius: borderRadiusLG,
                 }}
                 >
-                <Table />
+                {store.isLoading && <Spin style={{ display: 'block', margin: 'auto', padding: 100 }} />} 
+                {!store.isLoading && <Table />}
             </Layout.Content>
             </Layout>
         </Layout>
