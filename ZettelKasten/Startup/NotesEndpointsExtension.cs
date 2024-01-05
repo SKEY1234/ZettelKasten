@@ -35,7 +35,7 @@ public static class NotesEndpointsExtension
             return result;
         });
 
-        group.MapDelete("/Delete", async (Guid? noteId, IMediator _mediator, CancellationToken cancellationToken) =>
+        group.MapDelete("/Delete", async ([FromQuery] Guid? noteId, IMediator _mediator, CancellationToken cancellationToken) =>
         {
             Result<Unit> result = await _mediator.Send(new DeleteNoteCommand(noteId), cancellationToken);
             return result;

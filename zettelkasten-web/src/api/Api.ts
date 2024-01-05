@@ -30,3 +30,14 @@ export async function getNotes(): Promise<BaseResponse<INote[]>> {
         return response?.data;
     }
 }
+
+export async function deleteNote(noteId: string): Promise<BaseResponse<INote[]>> {
+    try {
+        const response = await axios.delete<BaseResponse<INote[]>>(`${process.env.REACT_APP_API_URL}/notes/Delete?noteId=${noteId}`);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}

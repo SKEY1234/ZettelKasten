@@ -9,8 +9,9 @@ import { useState } from 'react';
 import { Note } from '../components/Note';
 import { Table } from '../components/Table';
 import { store } from '../store/Store';
+import { observer } from 'mobx-react';
 
-export const BasePage: React.FC = () => {
+export const BasePage: React.FC = observer(() => {
     //const { Header, Sider, Content } = Layout;
     const { Search } = Input;
 
@@ -72,10 +73,12 @@ export const BasePage: React.FC = () => {
                     borderRadius: borderRadiusLG,
                 }}
                 >
-                {store.isLoading && <Spin style={{ display: 'block', margin: 'auto', padding: 100 }} />} 
-                {!store.isLoading && <Table />}
+                {store.isLoading && <Spin  />}
+                <div style={{ display: store.isLoading ? 'none' : undefined }}>
+                <Table />
+                </div>
             </Layout.Content>
             </Layout>
         </Layout>
     )
-}
+})

@@ -3,4 +3,5 @@ export interface INote {
     title: string;
     content: string;
     createdOn: Date;
+    checked: boolean;
 }

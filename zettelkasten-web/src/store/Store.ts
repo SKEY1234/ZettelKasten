@@ -1,6 +1,6 @@
 import { observable, runInAction } from "mobx";
 import { INote } from "../models/INote";
-import { getNotes } from "../api/Api";
+import { deleteNote, getNotes } from "../api/Api";
 
 interface IStore {
     notes: INote[];
@@ -12,6 +12,7 @@ interface IStore {
     errorMessages: string[] | undefined;
     mortgageId: string | undefined;
     setNotes: (notes: INote[]) => void;
+    setChecked: (noteId: string, checked: boolean) => void;
     setLoading: (loading: boolean) => void;
     setLoadingMessage: (loadingMsg: string) => void;
     setHasResult: (hasResult: boolean) => void;
@@ -20,6 +21,7 @@ interface IStore {
     setShowAlert: (showAlert: boolean) => void;
     getResultMessage: () => string;
     getNotes: () => void;
+    deleteNotes: () => void;
 }
 
 export function createstore(): IStore {
@@ -37,6 +39,17 @@ export function createstore(): IStore {
             runInAction(() => {
                 this.notes = notes;
             });
+        },
+
+        setChecked(noteId: string, checked: boolean) {
+            this.notes = this.notes.map(n => {
+                if (n.noteId == noteId)
+                    return { ...n, checked: checked};
+                else
+                    return n;
+            });
+            console.log(noteId, checked);
+            console.log(this.notes)
         },
 
         setLoading(isLoading: boolean) {
@@ -84,6 +97,16 @@ export function createstore(): IStore {
 
             this.setLoading(false);
         },
+
+        async deleteNotes() {
+            this.setLoading(true);
+
+            this.notes.filter(n => n.checked)
+                .forEach(async (n) => 
+                    await deleteNote(n.noteId));
+
+            this.setLoading(false);
+        }
     }
 }
 
