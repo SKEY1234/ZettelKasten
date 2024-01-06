@@ -1,9 +1,12 @@
 import { observable, runInAction } from "mobx";
 import { INote } from "../models/INote";
-import { deleteNote, getNotes } from "../api/Api";
+import { createNote, deleteNote, getNotes, updateNote } from "../api/Api";
 
 interface IStore {
     notes: INote[];
+    noteCreatorModalVisible: boolean;
+    noteEditorModalVisible: boolean;
+    noteTableColumnsNum: number;
     isLoading: boolean;
     loadingMessage: string;
     hasResult: boolean;
@@ -12,6 +15,8 @@ interface IStore {
     errorMessages: string[] | undefined;
     mortgageId: string | undefined;
     setNotes: (notes: INote[]) => void;
+    createNote: (note: INote) => void;
+    updateNote: (note: INote) => void;
     setChecked: (noteId: string, checked: boolean) => void;
     setLoading: (loading: boolean) => void;
     setLoadingMessage: (loadingMsg: string) => void;
@@ -22,11 +27,17 @@ interface IStore {
     getResultMessage: () => string;
     getNotes: () => void;
     deleteNotes: () => void;
+    setNoteCreatorModalVisible: (visible: boolean) => void;
+    setNoteEditorModalVisible: (visible: boolean) => void;
+    setNoteTableColumnsNum: (columnsNum: number) => void;
 }
 
 export function createstore(): IStore {
     return {
         notes: [],
+        noteCreatorModalVisible: false,
+        noteEditorModalVisible: false,
+        noteTableColumnsNum: 2,
         isLoading: false,
         loadingMessage: '',
         hasResult: false,
@@ -48,8 +59,18 @@ export function createstore(): IStore {
                 else
                     return n;
             });
-            console.log(noteId, checked);
-            console.log(this.notes)
+        },
+
+        setNoteCreatorModalVisible(visible: boolean) {
+            this.noteCreatorModalVisible = visible;
+        },
+
+        setNoteEditorModalVisible(visible: boolean) {
+            this.noteEditorModalVisible = visible;
+        },
+
+        setNoteTableColumnsNum(columnsNum: number) {
+            this.noteTableColumnsNum = columnsNum;
         },
 
         setLoading(isLoading: boolean) {
@@ -103,10 +124,26 @@ export function createstore(): IStore {
 
             this.notes.filter(n => n.checked)
                 .forEach(async (n) => 
-                    await deleteNote(n.noteId));
+                    await deleteNote(n.noteId!));
 
             this.setLoading(false);
-        }
+        },
+
+        async createNote(note: INote) {
+            this.setLoading(true);
+
+            await createNote(note);
+
+            this.setLoading(false);
+        },
+
+        async updateNote(note: INote) {
+            this.setLoading(true);
+
+            await updateNote(note);
+
+            this.setLoading(false);
+        },
     }
 }
 

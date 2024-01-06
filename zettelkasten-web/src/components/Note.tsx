@@ -21,7 +21,7 @@ export const Note: React.FC<INoteProps> = observer((props: INoteProps) => {
     }, [checked])
 
     return(
-        <div style={{ paddingBottom: 16 }}>
+        <div style={{ paddingBottom: 16 }} >
         <Card title={props.title} bordered={true} onClick={handleClick} style={{ 
             borderColor: checked ? '#5ea1ff' : '#d9d9d9',
             borderWidth: checked ? 2 : 1

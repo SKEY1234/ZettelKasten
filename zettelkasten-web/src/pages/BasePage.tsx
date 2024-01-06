@@ -10,6 +10,9 @@ import { Note } from '../components/Note';
 import { Table } from '../components/Table';
 import { store } from '../store/Store';
 import { observer } from 'mobx-react';
+import { useMount } from 'ahooks';
+import { NoteTableControlPanel } from '../components/NoteTableControlPanel';
+import { CreateNoteModal } from '../components/CreateNoteModal';
 
 export const BasePage: React.FC = observer(() => {
     //const { Header, Sider, Content } = Layout;
@@ -19,6 +22,16 @@ export const BasePage: React.FC = observer(() => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+    const [tabNum, setTabNum] = useState<number>(1);
+
+    useMount(async () => {
+        await store.getNotes();
+    })
+
+    const handleTabChange = (event: any) => {//(event: React.FormEvent<HTMLUListElement>) => {
+        console.log(event);
+        setTabNum(event.key);
+    }
 
     const handleInput = (event: React.FormEvent<HTMLElement>) => {
         console.log(event.target);
@@ -32,14 +45,16 @@ export const BasePage: React.FC = observer(() => {
                 theme="dark"
                 mode="inline"
                 defaultSelectedKeys={['1']}
+                //onChange={handleTabChange}
+                onClick={handleTabChange}
                 items={[
                     {
-                    key: '1',
+                    key: 1,
                     icon: <FileOutlined />,
                     label: 'Notes',
                     },
                     {
-                    key: '2',
+                    key: 2,
                     icon: <TagOutlined />,
                     label: 'Tags',
                     }
@@ -59,24 +74,28 @@ export const BasePage: React.FC = observer(() => {
                         height: 64,
                     }}
                     />
-                    <Search style={{ padding: '20px' }} placeholder="input search loading with enterButton" 
-                    loading enterButton onInput={handleInput}
+                    <Search style={{ padding: '16px' }} placeholder="input search loading with enterButton" 
+                    loading={false} enterButton onInput={handleInput}
                     />
                 </div>
             </Layout.Header>
             <Layout.Content
                 style={{
-                    margin: '24px 16px',
+                    margin: '16px 16px',
                     padding: 24,
                     minHeight: 280,
                     background: colorBgContainer,
                     borderRadius: borderRadiusLG,
                 }}
                 >
+                
                 {store.isLoading && <Spin  />}
-                <div style={{ display: store.isLoading ? 'none' : undefined }}>
-                <Table />
-                </div>
+                {/* style={{ display: store.isLoading ? 'none' : undefined }}> */}
+                {!store.isLoading && tabNum == 1 && 
+                <div>
+                    <NoteTableControlPanel />
+                    <Table />
+                </div>}
             </Layout.Content>
             </Layout>
         </Layout>

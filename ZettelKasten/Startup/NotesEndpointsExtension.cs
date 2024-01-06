@@ -23,13 +23,13 @@ public static class NotesEndpointsExtension
             return notes;
         });
 
-        group.MapPost("/Create", async (Note note, IMediator _mediator, CancellationToken cancellationToken) =>
+        group.MapPost("/Create", async ([FromBody] Note note, IMediator _mediator, CancellationToken cancellationToken) =>
         {
             Result<Unit> result = await _mediator.Send(new CreateNoteCommand(note), cancellationToken);
             return result;
         });
 
-        group.MapPut("/Update", async (Note note, IMediator _mediator, CancellationToken cancellationToken) =>
+        group.MapPut("/Update", async ([FromBody] Note note, IMediator _mediator, CancellationToken cancellationToken) =>
         {
             Result<Unit> result = await _mediator.Send(new UpdateNoteCommand(note), cancellationToken);
             return result;

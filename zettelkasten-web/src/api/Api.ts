@@ -41,3 +41,25 @@ export async function deleteNote(noteId: string): Promise<BaseResponse<INote[]>>
         return response?.data;
     }
 }
+
+export async function createNote(note: INote): Promise<BaseResponse<INote[]>> {
+    try {
+        const response = await axios.post<BaseResponse<INote[]>>(`${process.env.REACT_APP_API_URL}/notes/Create`, note);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}
+
+export async function updateNote(note: INote): Promise<BaseResponse<INote[]>> {
+    try {
+        const response = await axios.put<BaseResponse<INote[]>>(`${process.env.REACT_APP_API_URL}/notes/Update`, note);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}

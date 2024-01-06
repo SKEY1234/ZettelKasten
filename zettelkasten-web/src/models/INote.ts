@@ -1,5 +1,5 @@
 export interface INote {
-    noteId: string;
+    noteId: string | undefined;
     title: string;
     content: string;
     createdOn: Date;
