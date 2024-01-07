@@ -7,17 +7,16 @@ import {
   import { Layout, Menu, Button, Input, theme, Col, Card, Row, Spin } from 'antd';
 import { useState } from 'react';
 import { Note } from '../components/Note';
-import { Table } from '../components/Table';
+import { NoteTable } from '../components/NoteTable';
 import { store } from '../store/Store';
 import { observer } from 'mobx-react';
 import { useMount } from 'ahooks';
 import { NoteTableControlPanel } from '../components/NoteTableControlPanel';
 import { CreateNoteModal } from '../components/CreateNoteModal';
+import { TagTable } from '../components/TagTable';
+import { TagTableControlPanel } from '../components/TagTableControlPanel';
 
 export const BasePage: React.FC = observer(() => {
-    //const { Header, Sider, Content } = Layout;
-    const { Search } = Input;
-
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -26,6 +25,7 @@ export const BasePage: React.FC = observer(() => {
 
     useMount(async () => {
         await store.getNotes();
+        await store.getTags();
     })
 
     const handleTabChange = (event: any) => {//(event: React.FormEvent<HTMLUListElement>) => {
@@ -74,7 +74,7 @@ export const BasePage: React.FC = observer(() => {
                         height: 64,
                     }}
                     />
-                    <Search style={{ padding: '16px' }} placeholder="input search loading with enterButton" 
+                    <Input.Search style={{ padding: '16px' }} placeholder="input search loading with enterButton" 
                     loading={false} enterButton onInput={handleInput}
                     />
                 </div>
@@ -94,7 +94,12 @@ export const BasePage: React.FC = observer(() => {
                 {!store.isLoading && tabNum == 1 && 
                 <div>
                     <NoteTableControlPanel />
-                    <Table />
+                    <NoteTable />
+                </div>}
+                {!store.isLoading && tabNum == 2 && 
+                <div>
+                    <TagTableControlPanel />
+                    <TagTable />
                 </div>}
             </Layout.Content>
             </Layout>

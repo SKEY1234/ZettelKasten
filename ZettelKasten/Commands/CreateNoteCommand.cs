@@ -4,6 +4,6 @@ using ZettelKasten.Models.DTO;
 
 namespace ZettelKasten.Commands;
 
-public record CreateNoteCommand(Note Note) : IRequest<Result<Unit>>
+public record CreateNoteCommand(Note Note) : IRequest<Result<Guid>>
 {
 }

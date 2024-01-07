@@ -25,7 +25,7 @@ public static class NotesEndpointsExtension
 
         group.MapPost("/Create", async ([FromBody] Note note, IMediator _mediator, CancellationToken cancellationToken) =>
         {
-            Result<Unit> result = await _mediator.Send(new CreateNoteCommand(note), cancellationToken);
+            Result<Guid> result = await _mediator.Send(new CreateNoteCommand(note), cancellationToken);
             return result;
         });
 

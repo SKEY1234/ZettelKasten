@@ -5,7 +5,7 @@ import { useMount } from "ahooks";
 import { store } from "../store/Store";
 import { observer } from "mobx-react";
 
-export const Table: React.FC = observer(() => {
+export const NoteTable: React.FC = observer(() => {
     const [rows, setRows] = useState<React.ReactElement[]>([]);
     //const [columnsNum, setColumnsNum] = useState<number>(2);
     

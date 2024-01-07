@@ -17,7 +17,7 @@ export const Note: React.FC<INoteProps> = observer((props: INoteProps) => {
     }
 
     useEffect(() => {
-        store.setChecked(props.noteId, checked);
+        store.setCheckedNote(props.noteId, checked);
     }, [checked])
 
     return(

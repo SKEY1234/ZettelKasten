@@ -1,13 +1,28 @@
-import { Input, Modal } from "antd";
+import { Input, Modal, Select, Tag } from "antd";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { store } from "../store/Store";
+import { Option } from "antd/es/mentions";
 
 export const CreateNoteModal = observer(() => {
     const [titleText, setTitleText] = useState<string>('');
     const [contentText, setContentText] = useState<string>('');
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+    const [tagIds, setTagIds] = useState<string[]>([]);
     
+    // useMount(() => {
+    //     const options: SelectProps['options'] = [];
+
+    //     store.tags.forEach(tag => 
+    //     options.push({
+    //         label: tag.name,
+    //         value: tag.name,
+    //         style: { backgroundColor: tag.color },
+    //     }));
+
+    //     setTagOptions(options);
+    // })
+
     const handleOk = async () => {
         setConfirmLoading(true);
 
@@ -35,6 +50,24 @@ export const CreateNoteModal = observer(() => {
         setContentText(event.target.value);
     }
 
+    const handleChangeTag = (value: string[]) => {
+        setTagIds(value);
+    };
+
+    const tagRender = (props: any) => {
+        const { value, closable, onClose } = props;
+        const selectedTag = store.tags.filter(t => t.tagId === value).at(0);
+        return (
+            <Tag 
+                color={selectedTag?.color} 
+                closable={closable} 
+                onClose={onClose}
+            >
+                {selectedTag?.name}
+            </Tag>
+        );
+    }
+
     return (
         <>
             <Modal
@@ -50,11 +83,24 @@ export const CreateNoteModal = observer(() => {
                 value={titleText}
                 onChange={handleTitleChange}/>
                 <Input.TextArea 
+                style={{ marginBottom: 16 }} 
                 value={contentText}
                 onChange={handleContentChange}
                 placeholder="Content"
                 autoSize={{ minRows: 3, maxRows: 5 }}
                 />
+                <Select
+                    mode="multiple"
+                    tagRender={tagRender}
+                    value={tagIds}
+                    onChange={handleChangeTag}
+                    style={{ width: '100%' }}
+                >
+                    {store.tags.map(tag => 
+                        <Option key={tag.tagId} value={tag.tagId} >
+                            {tag.name}
+                        </Option>)}
+                </Select>
             </Modal>
         </>
     )

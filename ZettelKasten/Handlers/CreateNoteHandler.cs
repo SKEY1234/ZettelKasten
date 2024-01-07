@@ -5,7 +5,7 @@ using ZettelKasten.ORM;
 
 namespace ZettelKasten.Handlers;
 
-public class CreateNoteHandler : IRequestHandler<CreateNoteCommand, Result<Unit>>
+public class CreateNoteHandler : IRequestHandler<CreateNoteCommand, Result<Guid>>
 {
     private readonly ZettelkastenContext _context;
 
@@ -14,12 +14,12 @@ public class CreateNoteHandler : IRequestHandler<CreateNoteCommand, Result<Unit>
         _context = context;
     }
 
-    public async Task<Result<Unit>> Handle(CreateNoteCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateNoteCommand request, CancellationToken cancellationToken)
     {
         await _context.Notes.AddAsync(request.Note, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Result<Unit>.Success(Unit.Value);
+        return Result<Guid>.Success(request.Note.NoteId);
     }
 }

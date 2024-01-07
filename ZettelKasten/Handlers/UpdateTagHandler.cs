@@ -22,6 +22,7 @@ public class UpdateTagHandler : IRequestHandler<UpdateTagCommand, Result<Unit>>
             return Result<Unit>.Failure($"Не найден тэг с Id {request.Tag.TagId}");
 
         existingTag.Name = request.Tag.Name;
+        existingTag.Color = request.Tag.Color;
 
         await _context.SaveChangesAsync(cancellationToken);
 

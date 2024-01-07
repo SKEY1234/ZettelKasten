@@ -44,7 +44,7 @@ export const EditNoteModal = observer((props: IEditNoteProps) => {
     return(
         <>
             <Modal
-            title="New note"
+            title="Edit note"
             open={store.noteEditorModalVisible}
             onOk={handleOk}
             confirmLoading={confirmLoading}
