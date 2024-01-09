@@ -16,9 +16,13 @@ public static class ApiEndpointsExtension
             .TagsGroup()
             .WithTags("Tags");
 
-        group.MapGroup("/relations")
-            .RelationsGroup()
-            .WithTags("Relations");
+        group.MapGroup("/noteRelations")
+            .NoteRelationsGroup()
+            .WithTags("NoteRelations");
+
+        group.MapGroup("/noteTagRelations")
+            .NoteTagRelationsGroup()
+            .WithTags("NoteTagRelations");
 
         return group;
     }

@@ -9,19 +9,6 @@ export const CreateNoteModal = observer(() => {
     const [contentText, setContentText] = useState<string>('');
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [tagIds, setTagIds] = useState<string[]>([]);
-    
-    // useMount(() => {
-    //     const options: SelectProps['options'] = [];
-
-    //     store.tags.forEach(tag => 
-    //     options.push({
-    //         label: tag.name,
-    //         value: tag.name,
-    //         style: { backgroundColor: tag.color },
-    //     }));
-
-    //     setTagOptions(options);
-    // })
 
     const handleOk = async () => {
         setConfirmLoading(true);
@@ -32,7 +19,8 @@ export const CreateNoteModal = observer(() => {
             content: contentText,
             createdOn: new Date,
             checked: false
-        });
+        }, tagIds);
+
         await store.getNotes();
         store.setNoteCreatorModalVisible(false);
         setConfirmLoading(false);

@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { INote } from "../models/INote";
 import { BaseResponse } from "../models/responses/BaseResponse";
 import { ITag } from "../models/ITag";
+import { INoteTagRelation } from "../models/INoteTagRelation";
 
 export const data = [
     { title: "title1", content: "content1" },
@@ -101,6 +102,28 @@ export async function createTag(tag: ITag): Promise<BaseResponse<ITag[]>> {
 export async function updateTag(tag: ITag): Promise<BaseResponse<ITag[]>> {
     try {
         const response = await axios.put<BaseResponse<ITag[]>>(`${process.env.REACT_APP_API_URL}/tags/Update`, tag);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}
+
+export async function getNoteTagRelations(): Promise<BaseResponse<INoteTagRelation[]>> {
+    try {
+        const response = await axios.get<BaseResponse<INoteTagRelation[]>>(`${process.env.REACT_APP_API_URL}/noteTagRelations/GetAll`);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}
+
+export async function createNoteTagRelation(noteTagRelation: INoteTagRelation): Promise<BaseResponse<void>> {
+    try {
+        const response = await axios.post<BaseResponse<void>>(`${process.env.REACT_APP_API_URL}/noteTagRelations/Create`, noteTagRelation);
         return response?.data;
     } catch (e: unknown) {
         const error = e as AxiosError;

@@ -1,11 +1,13 @@
 import { observable, runInAction } from "mobx";
 import { INote } from "../models/INote";
-import { createNote, createTag, deleteNote, deleteTag, getNotes, getTags, updateNote, updateTag } from "../api/Api";
+import { createNote, createNoteTagRelation, createTag, deleteNote, deleteTag, getNoteTagRelations, getNotes, getTags, updateNote, updateTag } from "../api/Api";
 import { ITag } from "../models/ITag";
+import { INoteTagRelation } from "../models/INoteTagRelation";
 
 interface IStore {
     notes: INote[];
     tags: ITag[];
+    noteTagRealtions: INoteTagRelation[];
     noteCreatorModalVisible: boolean;
     noteEditorModalVisible: boolean;
     tagCreatorModalVisible: boolean;
@@ -20,7 +22,8 @@ interface IStore {
     mortgageId: string | undefined;
     setNotes: (notes: INote[]) => void;
     setTags: (tags: ITag[]) => void;
-    createNote: (note: INote) => void;
+    setNoteTagRelations: (relations: INoteTagRelation[]) => void;
+    createNote: (note: INote, tagIds: string[]) => void;
     updateNote: (note: INote) => void;
     createTag: (tag: ITag) => void;
     updateTag: (tag: ITag) => void;
@@ -36,6 +39,7 @@ interface IStore {
     getResultMessage: () => string;
     getNotes: () => void;
     getTags: () => void;
+    getNoteTagRelations: () => void;
     deleteNotes: () => void;
     deleteTags: () => void;
     setNoteCreatorModalVisible: (visible: boolean) => void;
@@ -49,6 +53,7 @@ export function createstore(): IStore {
     return {
         notes: [],
         tags: [],
+        noteTagRealtions: [],
         noteCreatorModalVisible: false,
         noteEditorModalVisible: false,
         tagCreatorModalVisible: false,
@@ -73,6 +78,12 @@ export function createstore(): IStore {
                 this.tags = tags;
                 this.tags.forEach(t => 
                     this.setTagKey(t.tagId!))
+            });
+        },
+
+        setNoteTagRelations(relations: INoteTagRelation[]) {
+            runInAction(() => {
+                this.noteTagRealtions = relations;
             });
         },
 
@@ -179,11 +190,18 @@ export function createstore(): IStore {
             this.setLoading(false);
         },
 
-        async createNote(note: INote) {
+        async createNote(note: INote, tagIds: string[]) {
             this.setLoading(true);
 
             const response = await createNote(note);
 
+            tagIds.forEach(tagId => 
+                createNoteTagRelation({
+                    relationId: undefined,
+                    noteId: response.value!,
+                    tagId: tagId,
+                    createdOn: new Date
+                }));
             console.log('created note:', response.value);
 
             this.setLoading(false);
@@ -239,6 +257,23 @@ export function createstore(): IStore {
 
             this.setLoading(false);
         },
+
+        async getNoteTagRelations() {
+            this.setLoading(true);
+            const response = await getNoteTagRelations();
+            
+            this.setSuccess(response?.isSuccess ?? false);
+
+            if (response?.value) {
+                this.setNoteTagRelations(response.value!);
+            }
+
+            if (response?.errors) {
+                this.setErrorMessages(response?.errors);
+            }
+
+            this.setLoading(false);
+        }
     }
 }
 

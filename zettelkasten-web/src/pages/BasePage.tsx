@@ -26,6 +26,7 @@ export const BasePage: React.FC = observer(() => {
     useMount(async () => {
         await store.getNotes();
         await store.getTags();
+        await store.getNoteTagRelations();
     })
 
     const handleTabChange = (event: any) => {//(event: React.FormEvent<HTMLUListElement>) => {
