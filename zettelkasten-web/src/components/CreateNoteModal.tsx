@@ -2,7 +2,6 @@ import { Input, Modal, Select, Tag } from "antd";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { store } from "../store/Store";
-import { Option } from "antd/es/mentions";
 
 export const CreateNoteModal = observer(() => {
     const [titleText, setTitleText] = useState<string>('');
@@ -22,6 +21,7 @@ export const CreateNoteModal = observer(() => {
         }, tagIds);
 
         await store.getNotes();
+        await store.getNoteTagRelations();
         store.setNoteCreatorModalVisible(false);
         setConfirmLoading(false);
     };
@@ -85,9 +85,9 @@ export const CreateNoteModal = observer(() => {
                     style={{ width: '100%' }}
                 >
                     {store.tags.map(tag => 
-                        <Option key={tag.tagId} value={tag.tagId} >
+                        <Select.Option key={tag.tagId} value={tag.tagId} >
                             {tag.name}
-                        </Option>)}
+                        </Select.Option>)}
                 </Select>
             </Modal>
         </>

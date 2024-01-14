@@ -1,6 +1,6 @@
 import { observable, runInAction } from "mobx";
 import { INote } from "../models/INote";
-import { createNote, createNoteTagRelation, createTag, deleteNote, deleteTag, getNoteTagRelations, getNotes, getTags, updateNote, updateTag } from "../api/Api";
+import { createNote, createNoteTagRelation, createTag, deleteNote, deleteNoteTagRelation, deleteTag, getNoteTagRelations, getNotes, getTags, updateNote, updateTag } from "../api/Api";
 import { ITag } from "../models/ITag";
 import { INoteTagRelation } from "../models/INoteTagRelation";
 
@@ -24,7 +24,7 @@ interface IStore {
     setTags: (tags: ITag[]) => void;
     setNoteTagRelations: (relations: INoteTagRelation[]) => void;
     createNote: (note: INote, tagIds: string[]) => void;
-    updateNote: (note: INote) => void;
+    updateNote: (note: INote, tagIds: string[]) => void;
     createTag: (tag: ITag) => void;
     updateTag: (tag: ITag) => void;
     setCheckedNote: (noteId: string, checked: boolean) => void;
@@ -207,10 +207,27 @@ export function createstore(): IStore {
             this.setLoading(false);
         },
 
-        async updateNote(note: INote) {
+        async updateNote(note: INote, tagIds: string[]) {
             this.setLoading(true);
 
             await updateNote(note);
+
+            const currentNoteTagRelations = this.noteTagRealtions.filter(r => r.noteId === note.noteId);
+            console.log(currentNoteTagRelations);
+            tagIds.forEach(tagId => {
+                if (!currentNoteTagRelations.some(r => r.tagId === tagId))
+                    createNoteTagRelation({
+                        relationId: undefined,
+                        noteId: note.noteId!,
+                        tagId: tagId,
+                        createdOn: new Date
+                    });
+            });
+
+            currentNoteTagRelations.forEach(async (relation) => {
+                if (!tagIds.some(tagId => tagId === relation.tagId))
+                    await deleteNoteTagRelation(relation.relationId!);
+            });
 
             this.setLoading(false);
         },

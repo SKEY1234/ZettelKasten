@@ -42,6 +42,15 @@ export const NoteTableControlPanel = observer(() => {
           });
     }
 
+    const getCheckedNote = () => {
+        const checkedNote = store.notes.filter(n => n.checked).at(0);
+
+        if (!checkedNote)
+            throw new Error('Не выбрана заметка');
+
+        return checkedNote;
+    }
+
     return (
         <>
             <div style={{ paddingBottom: 20 }}>
@@ -88,9 +97,7 @@ export const NoteTableControlPanel = observer(() => {
                 </Button>
                 <CreateNoteModal />
                 {store.notes.filter(n => n.checked).length == 1 && <EditNoteModal 
-                    noteId={store.notes.filter(n => n.checked).at(0)?.noteId!}
-                    title={store.notes.filter(n => n.checked).at(0)?.title!} 
-                    content={store.notes.filter(n => n.checked).at(0)?.content!} 
+                    note={getCheckedNote()}
                 />}
             </div>
         </>

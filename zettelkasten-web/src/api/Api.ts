@@ -131,3 +131,14 @@ export async function createNoteTagRelation(noteTagRelation: INoteTagRelation): 
         return response?.data;
     }
 }
+
+export async function deleteNoteTagRelation(relationId: string): Promise<BaseResponse<void>> {
+    try {
+        const response = await axios.delete<BaseResponse<void>>(`${process.env.REACT_APP_API_URL}/noteTagRelations/Delete?relationId=${relationId}`);
+        return response?.data;
+    } catch (e: unknown) {
+        const error = e as AxiosError;
+        const response = error?.response as AxiosResponse;
+        return response?.data;
+    }
+}
