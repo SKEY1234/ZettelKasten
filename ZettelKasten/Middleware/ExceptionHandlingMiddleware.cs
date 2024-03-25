@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Net;
 using System.Text.Json;
-using ZettelKasten.Models.API;
+using ZettelKasten.Models.Responses;
 
 namespace ZettelKasten.Middleware;
 

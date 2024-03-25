@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ZettelKasten.Models.DTO;
 
 namespace ZettelKasten.ORM;
 
-public partial class ZettelkastenContext : DbContext
+public partial class ZettelkastenContext : IdentityDbContext
 {
     public ZettelkastenContext()
     {
@@ -33,6 +34,8 @@ public partial class ZettelkastenContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.HasPostgresExtension("uuid-ossp");
 
         modelBuilder.Entity<Note>(entity =>

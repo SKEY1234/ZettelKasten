@@ -1,4 +1,4 @@
-﻿namespace ZettelKasten.Models.API;
+﻿namespace ZettelKasten.Models.Responses;
 
 public class Result<T>
 {

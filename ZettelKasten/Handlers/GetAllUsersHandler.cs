@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZettelKasten.Models.API;
 using ZettelKasten.Models.DTO;
+using ZettelKasten.Models.Responses;
 using ZettelKasten.ORM;
 using ZettelKasten.Queries;
 

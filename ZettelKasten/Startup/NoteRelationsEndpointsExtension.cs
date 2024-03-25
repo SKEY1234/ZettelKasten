@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ZettelKasten.Commands;
-using ZettelKasten.Models.API;
 using ZettelKasten.Models.DTO;
+using ZettelKasten.Models.Responses;
 
 namespace ZettelKasten.Startup;
 

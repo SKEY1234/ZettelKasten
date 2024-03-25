@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZettelKasten.Commands;
-using ZettelKasten.Models.API;
 using ZettelKasten.Models.DTO;
+using ZettelKasten.Models.Responses;
 using ZettelKasten.ORM;
 
 namespace ZettelKasten.Handlers;

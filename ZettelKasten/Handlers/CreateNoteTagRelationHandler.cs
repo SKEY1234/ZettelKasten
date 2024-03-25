@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using ZettelKasten.Commands;
-using ZettelKasten.Models.API;
+using ZettelKasten.Models.Responses;
 using ZettelKasten.ORM;
 
 namespace ZettelKasten.Handlers;
